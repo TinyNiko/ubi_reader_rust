@@ -1,2 +1,2 @@
 [workspace]
-members = ["list_files", "core", "extract_files"]
+members = ["list_files", "corelib", "extract_files"]
