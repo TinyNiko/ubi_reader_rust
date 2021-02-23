@@ -3,7 +3,7 @@ use std::io::prelude::*;
 use std::path::Path;
 use std::io::SeekFrom;
 // mod debugs;
-use crate::ubi::defines::{UBI_EC_HDR_MAGIC, FILE_CHUNK_SZ};
+// use crate::ubi::defines::{UBI_EC_HDR_MAGIC, FILE_CHUNK_SZ};
 // use corelib::ubifs::defines::{UBIFS_NODE_MAGIC, UBIFS_SB_NODE_SZ, UBIFS_SB_NODE, UBIFS_COMMON_HDR_SZ};
 // use corelib::ubifs::nodes;
 pub fn guess_start_offset(path: &str, guess_offset: Option<i32>) -> i32{

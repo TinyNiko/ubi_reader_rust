@@ -91,7 +91,7 @@ const UBIFS_LPT_NNODE: i32         = 1; // LPT internal node
 const UBIFS_LPT_LTAB: i32          = 2; // LPT"s own lprops table
 const UBIFS_LPT_LSAVE: i32         = 3; // LPT"s save table (big model only)
 const UBIFS_LPT_NODE_CNT: i32      = 4; // count of LPT node types
-const UBIFS_LPT_NOT_A_NODE: i32 = (1 << UBIFS_LPT_TYPE_BITS) - 1; // 4 bits of 1
+const UBIFS_LPT_NOT_A_NODE: i32 = 1 << UBIFS_LPT_TYPE_BITS - 1; // 4 bits of 1
 
 // Inode types
 const UBIFS_ITYPE_REG: i32  = 0; // Regular file
@@ -134,10 +134,10 @@ const UBIFS_MST_LEBS: i32 = 2;
 const UBIFS_SB_LNUM: i32 = 0;
 
 // First LEB of the master area
-const UBIFS_MST_LNUM: i32 = (UBIFS_SB_LNUM + UBIFS_SB_LEBS);
+const UBIFS_MST_LNUM: i32 = UBIFS_SB_LNUM + UBIFS_SB_LEBS;
 
 // First LEB of log area
-const UBIFS_LOG_LNUM: i32 = (UBIFS_MST_LNUM + UBIFS_MST_LEBS);
+const UBIFS_LOG_LNUM: i32 = UBIFS_MST_LNUM + UBIFS_MST_LEBS;
 
 // On-flash inode flags
 const UBIFS_COMPR_FL: i32     = 1;  // Use compression for this inode

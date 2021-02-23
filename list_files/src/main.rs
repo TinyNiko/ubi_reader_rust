@@ -6,8 +6,10 @@ use std::process;
 use corelib::settings;
 use corelib::utils;
 use corelib::ubi_io::UbiFile;
+use corelib::ubifs::ubifsx::UbiFs;
 use corelib::ubi::defines::{UBI_EC_HDR_MAGIC};
 use corelib::ubifs::defines::{UBIFS_NODE_MAGIC};
+use corelib::ubifs::list::{copy_file, list_files};
 use std::fs;
 use std::path::PathBuf;
 
@@ -127,7 +129,16 @@ fn main() {
     if filetype == UBI_EC_HDR_MAGIC {
        println!("good guy");
     }else if filetype == UBIFS_NODE_MAGIC {
-       // let ubifs_obj = 
+       let ubifs_obj = UbiFs::new(ufile_obj);
+       if matches.is_present("listpath"){
+            let listpath = matches.value_of("listpath").unwrap();
+            list_files(ubifs_obj, listpath);
+       }
+       if matches.is_present("copyfile") && matches.is_present("copyfiledest"){
+            let file_path = matches.value_of("copyfile").unwrap();
+            let dest_file_path = matches.value_of("copyfiledest").unwrap();
+            copy_file(ubifs_obj, file_path, dest_file_path);
+       }
     }else{
         println!("Something went wrong to get here.");
     }

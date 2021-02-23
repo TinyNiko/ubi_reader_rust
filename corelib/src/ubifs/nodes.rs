@@ -20,244 +20,175 @@ use corelib::ubifs::misc::parse_key;
 use corelib::ubifs::defines;
 use corelib::ubifs::display;
 
-struct common_hdr{};
+struct CommonHdr{
 
-// class common_hdr(object):
-//     """Get common header at given LEB number + offset.
-
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
-
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf):
-
-//         fields = dict(list(zip(UBIFS_COMMON_HDR_FIELDS, struct.unpack(UBIFS_COMMON_HDR_FORMAT, buf))))
-//         for key in fields:
-//             setattr(self, key, fields[key])
-
-//         setattr(self, 'errors', [])
-        
-//     def __repr__(self):
-//         return 'UBIFS Common Header'
-
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
-
-//     def display(self, tab=''):
-//         return display.common_hdr(self, tab)
+};
 
 
-// class ino_node(object):
-//     """Get inode node at given LEB number + offset.
+impl CommonHdr{
+    fn new()->CommonHdr{
+        CommonHdr{
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
+        }
+    }
+    fn repr(){
 
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf):
+    }
+    fn iter(){
 
-//         fields = dict(list(zip(UBIFS_INO_NODE_FIELDS, struct.unpack(UBIFS_INO_NODE_FORMAT, buf[0:UBIFS_INO_NODE_SZ]))))
-//         for key in fields:
-//             if key == 'key':
-//                 setattr(self, key, parse_key(fields[key]))
-//             else:
-//                 setattr(self, key, fields[key])
+    }
+    fn display(){
 
-//         setattr(self, 'data', buf[UBIFS_INO_NODE_SZ:])
-//         setattr(self, 'errors', [])
-
-//     def __repr__(self):
-//         return 'UBIFS Ino Node'
-
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
-
-//     def display(self, tab=''):
-//         return display.ino_node(self, tab)
+    }
+}
 
 
-// class dent_node(object):
-//     """Get dir entry node at given LEB number + offset.
+struct InoNode{
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
+}
 
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf):
-//         fields = dict(list(zip(UBIFS_DENT_NODE_FIELDS, struct.unpack(UBIFS_DENT_NODE_FORMAT, buf[0:UBIFS_DENT_NODE_SZ]))))
-//         for key in fields:
-//             if key == 'key':
-//                 setattr(self, key, parse_key(fields[key]))
-//             else:
-//                 setattr(self, key, fields[key])
+impl InoNode{
+    fn new(){
 
-//         setattr(self, 'name', '%s' % buf[-self.nlen-1:-1].decode('utf-8'))
-//         setattr(self, 'errors', [])
+    }
 
-//     def __repr__(self):
-//         return 'UBIFS Directory Entry Node'
+    fn repr(){
 
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
+    }
+    fn iter(){
 
-//     def display(self, tab=''):
-//         return display.dent_node(self, tab)
+    }
 
+    fn display(){
 
-// class data_node(object):
-//     """Get data node at given LEB number + offset.
+    }
+}
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
-//     Int:offset  -- Offset in LEB of data node.
+struct DentNode{
 
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf, file_offset):
+}
 
-//         fields = dict(list(zip(UBIFS_DATA_NODE_FIELDS, struct.unpack(UBIFS_DATA_NODE_FORMAT, buf[0:UBIFS_DATA_NODE_SZ]))))
-//         for key in fields:
-//             if key == 'key':
-//                 setattr(self, key, parse_key(fields[key]))
-//             else:
-//                 setattr(self, key, fields[key])
+impl DentNode{
+    fn new(){
 
-//         setattr(self, 'offset', file_offset)
-//         setattr(self, 'compr_len', (len(buf) - UBIFS_DATA_NODE_SZ))
-//         setattr(self, 'errors', [])
+    }
 
-//     def __repr__(self):
-//         return 'UBIFS Data Node'
+    fn repr(){
 
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
+    }
+    fn iter(){
 
-//     def display(self, tab=''):
-//         return display.data_node(self, tab)
+    }
 
+    fn display(){
 
-// class idx_node(object):
-//     """Get index node at given LEB number + offset.
+    }
+}
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
+struct DataNode{
 
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf):
-//         fields = dict(list(zip(UBIFS_IDX_NODE_FIELDS, struct.unpack(UBIFS_IDX_NODE_FORMAT, buf[0:UBIFS_IDX_NODE_SZ]))))
-//         for key in fields:
-//             setattr(self, key, fields[key])
+}
+impl DataNode{
+    fn new(){
 
-//         idxs = UBIFS_IDX_NODE_SZ
-//         brs = UBIFS_BRANCH_SZ
-//         setattr(self, 'branches', [branch(buf[idxs+(brs*i):idxs+(brs*i)+brs]) for i in range(0, self.child_cnt)])
-//         setattr(self, 'errors', [])
+    }
 
-//     def __repr__(self):
-//         return 'UBIFS Index Node'
+    fn repr(){
 
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
+    }
 
-//     def display(self, tab=''):
-//         return display.idx_node(self, tab)
+    fn iter(){
+
+    }
+
+    fn display(){
+
+    }
+}
 
 
-// class branch(object):
-//     """ Create branch from given idx_node data buf.
+struct IdxNode{
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
-//     """
-//     def __init__(self, buf):
-//         fields = dict(list(zip(UBIFS_BRANCH_FIELDS, struct.unpack(UBIFS_BRANCH_FORMAT, buf))))
-//         for key in fields:
-//             if key == 'key':
-//                 setattr(self, key, parse_key(fields[key]))
-//             else:
-//                 setattr(self, key, fields[key])
+}
 
-//         setattr(self, 'errors', [])
+impl IdxNode{
+    fn new(){
 
-//     def __repr__(self):
-//         return 'UBIFS Branch'
+    }
 
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
+    fn repr(){
 
-//     def display(self, tab=''):
-//         return display.branch(self, tab)
+    }
+    fn iter(){
+
+    }
+    fn display(){
+
+    }
+}
+
+struct Branch{
+
+}
+
+impl Branch{
+    fn new(){
+
+    }
+
+    fn repr(){
+
+    }
+    fn iter(){
+
+    }
+    fn display(){
+
+    }
+}
+
+
+
+struct SbNode{
+
+}
+
+impl SbNode{
+    fn new(){
+
+    }
+
+    fn repr(){
+
+    }
+
+    fn iter(){
+
+    }
+
+    fn display(){
+
+    }
+}
+
+struct MstNode{
     
+}
 
-// class sb_node(object):
-//     """Get superblock node at given LEB number + offset.
+impl MstNode{
+    fn new(){
 
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
-//     Int:offset  -- Offset in LEB of data node.
+    }
 
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf, file_offset=-1):
-//         self.file_offset = file_offset
-//         fields = dict(list(zip(UBIFS_SB_NODE_FIELDS, struct.unpack(UBIFS_SB_NODE_FORMAT, buf))))
-//         for key in fields:
-//             setattr(self, key, fields[key])
+    fn repr(){
 
-//         setattr(self, 'errors', [])
+    }
 
-//     def __repr__(self):
-//         return 'UBIFS Super Block Node'
+    fn iter(){
 
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
+    }
 
-//     def display(self, tab=''):
-//         return display.sb_node(self, tab)
-
-
-// class mst_node(object):
-//     """Get master node at given LEB number + offset.
-
-//     Arguments:
-//     Bin:buf     -- Raw data to extract header information from.
-//     Int:offset  -- Offset in LEB of data node.
-
-//     See ubifs/defines.py for object attributes.
-//     """
-//     def __init__(self, buf, file_offset=-1):
-//         self.file_offset = file_offset
-//         fields = dict(list(zip(UBIFS_MST_NODE_FIELDS, struct.unpack(UBIFS_MST_NODE_FORMAT, buf))))
-//         for key in fields:
-//             setattr(self, key, fields[key])
-
-//         setattr(self, 'errors', [])
-
-//     def __repr__(self):
-//         return 'UBIFS Master Block Node'
-
-//     def __iter__(self):
-//         for key in dir(self):
-//             if not key.startswith('_'):
-//                 yield key, getattr(self, key)
-
-//     def display(self, tab=''):
-//         return display.mst_node(self, tab)
+    fn display(){
+        
+    }
+}
