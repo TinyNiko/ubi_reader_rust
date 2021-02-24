@@ -1,10 +1,10 @@
 use crate::ubi_io::UbiFile;
-pub struct UbiFs {
+pub struct UbiFs <'a>{
     name: &'a str,
     path: &'a str
 }
 
-impl UbiFs {
+impl UbiFs <'_>{
     pub fn new(ubifs_file: UbiFile)-> UbiFs{
         UbiFs{
             name: "233",

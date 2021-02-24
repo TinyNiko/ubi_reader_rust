@@ -129,10 +129,10 @@ fn main() {
     if filetype == UBI_EC_HDR_MAGIC {
        println!("good guy");
     }else if filetype == UBIFS_NODE_MAGIC {
-       let ubifs_obj = UbiFs::new(ufile_obj);
+       let mut ubifs_obj = UbiFs::new(ufile_obj);
        if matches.is_present("listpath"){
             let listpath = matches.value_of("listpath").unwrap();
-            list_files(ubifs_obj, listpath);
+            ubifs_obj = list_files(ubifs_obj, listpath);
        }
        if matches.is_present("copyfile") && matches.is_present("copyfiledest"){
             let file_path = matches.value_of("copyfile").unwrap();

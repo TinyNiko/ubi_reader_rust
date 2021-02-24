@@ -1,8 +1,8 @@
 
 use crate::ubifs::ubifsx::UbiFs;
 
-pub fn list_files(ubifs: UbiFs, listpath: &str) {
-
+pub fn list_files<'a>(ubifs: UbiFs<'a>, listpath: &str) ->UbiFs<'a>{
+    ubifs
 }
 
 pub fn copy_file(ubifs: UbiFs, file_path: &str, dest_path: &str) {
