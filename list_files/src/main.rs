@@ -143,7 +143,7 @@ fn main() {
         println!("Something went wrong to get here.");
     }
     // let log = matches.value_of("log");
-    // println!("{}", log);
+    // println!("{}", log);ñ
     // Gets a value for config if supplied by user, or defaults to "default.conf"
     // let config = matches.value_of("log").unwrap_or("default.conf");
     // println!("Value for config: {}", config);
