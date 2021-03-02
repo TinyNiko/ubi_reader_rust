@@ -113,4 +113,4 @@ const UBI_COMPAT_REJECT: i32   = 5; // Reject this UBI image
 // PRINT_COMPAT_LIST = [0, "Delete", "Read Only", 0, "Preserve", "Reject"]
 
 // File chunk size for reads.
-pub const FILE_CHUNK_SZ: i32 = 5 * 1024 * 1024;
+pub const FILE_CHUNK_SZ: usize = 5 * 1024 * 1024;

@@ -4,12 +4,12 @@
 pub struct UbiFile<'a> {
     path: &'a str,
     block_size: i32,
-    start_offset: i32,
+    start_offset: u32,
     end_offset: i32
 }
 
 impl UbiFile<'_>{
-    pub fn new(path: &str, block_size: i32, start_offset: i32, end_offset: i32) -> UbiFile {
+    pub fn new(path: &str, block_size: i32, start_offset: u32, end_offset: i32) -> UbiFile {
         UbiFile{
             path: path,
             block_size: block_size,

@@ -103,27 +103,37 @@ fn main() {
     }else {
         start_offset = utils::guess_start_offset(file_path, None);
     }
-    println!("{}", start_offset);
+    println!("start off is {}", start_offset);
     if matches.is_present("end_offset") {
         end_offset = matches.value_of("end_offset").unwrap().parse().unwrap();
         println!("{}", end_offset);
-    }
+    };
 
-    let filetype = utils::guess_filetype(file_path, Some(start_offset)).unwrap();
+    let filetype = match utils::guess_filetype(file_path, Some(start_offset)){
+           Ok(ok) => ok,
+           Err(err) => panic!("ggggg file type error")
+    };
     println!("{:?}", filetype);
-    let block_size = 0;
+    let mut block_size = 0;
     if matches.is_present("block_size") {
-
+       block_size = matches.value_of("block_size").unwrap().parse().unwrap();
     }else {
-        // if filetype == {
-
-        // }else if filetype ==  {
-
-        // }
-        // if block_size == 0 {
-        //     println!("error");
-        // }
+        if filetype == UBI_EC_HDR_MAGIC{
+            block_size = match utils::guess_peb_size(file_path){
+                Ok(ok) => ok,
+                Err(err) => panic!("error")
+            };
+        }else if filetype == UBIFS_NODE_MAGIC {
+            block_size = utils::guess_leb_size(file_path){
+                Ok(ok) => ok,
+                Err(err) => panic!("error")
+            };
+        }
+        if block_size == 0 {
+            panic!("block size error");
+        }
     }
+    println!("{}", block_size);
 
     let ufile_obj = UbiFile::new(file_path, block_size, start_offset, end_offset);
     if filetype == UBI_EC_HDR_MAGIC {

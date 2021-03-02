@@ -164,7 +164,7 @@ const UBIFS_DENT_NODE: i32         = 2;  // Directory entry node
 const UBIFS_XENT_NODE: i32         = 3;  // Extended attribute node
 const UBIFS_TRUN_NODE: i32         = 4;  // Truncation node
 const UBIFS_PAD_NODE: i32          = 5;  // Padding node
-const UBIFS_SB_NODE: i32           = 6;  // Superblock node
+pub const UBIFS_SB_NODE: i32           = 6;  // Superblock node
 const UBIFS_MST_NODE: i32          = 7;  // Master node
 const UBIFS_REF_NODE: i32          = 8;  // LEB reference node
 const UBIFS_IDX_NODE: i32          = 9;  // Index node
@@ -198,7 +198,7 @@ const UBIFS_FLG_SPACE_FIXUP: i32   = 4; // first-mount "fixup" of free space wit
 //                            "node_type", // Node type.
 //                            "group_type",// Node group type.
 //                            "padding"]   // Reserved for future, zeros.
-const UBIFS_COMMON_HDR_SZ: i32 = 24;
+pub const UBIFS_COMMON_HDR_SZ: i32 = 24;
                             // LEBs needed.
 // Key offset in key nodes
 // out of place because of ordering issues.
@@ -306,7 +306,7 @@ const UBIFS_DEV_DESC_SZ: i32 = 12;
 //                                             // was created.
 //                         "ro_compat_version",// UBIFS R/O Compatibility version.
 //                         "padding2"]         //Reserved for future, zeros
-// const UBIFS_SB_NODE_SZ = struct.calcsize(UBIFS_SB_NODE_FORMAT)
+pub const UBIFS_SB_NODE_SZ: usize = 4072; //struct.calcsize(UBIFS_SB_NODE_FORMAT)
 
 // // Master node
 // const UBIFS_MST_NODE_FORMAT = "<QQIIIIIIIIQQQQQQIIIIIIIIIIII344s"
