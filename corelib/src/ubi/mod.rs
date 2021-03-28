@@ -26,10 +26,12 @@ impl UbiBase <'_>{
             leb_size: 0
         };
         let blocks = extract_blocks(&mut ubi_base);
+        println!("{}",blocks.len());
         let block_count = blocks.len();
         if block_count <= 0{
             // panic!("block count is error");
         }
+
         ubi_base
 
     }

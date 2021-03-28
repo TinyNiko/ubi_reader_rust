@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::io::SeekFrom;
+use std::vec::Vec;
 extern crate regex;
 use regex::bytes::Regex;
 // mod debugs;
@@ -136,7 +137,7 @@ pub fn guess_peb_size(path: &str) -> Result<u32, &str>{
     let file_size = file.seek(SeekFrom::End(0)).unwrap() + 1;
     file.seek(SeekFrom::Start(0));
     let mut block_size = 0;
-    // let offsets = vec![];
+    let offsets = Vec::<usize>::new();
     // for i in (0..file_size).step_by(FILE_CHUNK_SZ){
     //     let mut buf =[0; FILE_CHUNK_SZ];
     //     file.read(&mut buf);

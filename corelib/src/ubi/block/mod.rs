@@ -45,7 +45,14 @@ pub fn extract_blocks(ubi: &mut UbiBase) -> HashMap<i32, i32> {
     ubi.file.seek(ubi.file.start_offset as u64);
     let ped_count = 0;
     let cur_offset = 0;
-    // let bad_blocks = Vec::new();
+    let bad_blocks = Vec::<i32>::new();
+    println!("{}", ubi.file.start_offset);
+    println!("{}", ubi.file.end_offset);
+    println!("{}", ubi.file.block_size);
+
+    for  index in (ubi.file.start_offset..ubi.file.end_offset as u32).step_by(ubi.file.block_size as usize) {
+
+    }
 
     out
 }
