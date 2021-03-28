@@ -2,6 +2,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::io::SeekFrom;
+extern crate regex;
+use regex::bytes::Regex;
 // mod debugs;
 use crate::debugs::{log, error};
 use crate::ubi::defines::{UBI_EC_HDR_MAGIC, FILE_CHUNK_SZ};
@@ -99,6 +101,7 @@ pub fn guess_filetype(path: &str, start_offset: Option<u32>) -> Result<[u8;4], &
 }
 
 pub fn guess_leb_size(path: &str) -> Result<u32, &str>{
+    println!("guess leb size");
     let mut file = match File::open(&path) {
         Err(why) => panic!("couldn't open {}", why),
         Ok(file) => file
@@ -109,12 +112,23 @@ pub fn guess_leb_size(path: &str) -> Result<u32, &str>{
     for i in (0..file_size).step_by(FILE_CHUNK_SZ){
         let mut buf =[0; FILE_CHUNK_SZ];
         file.read(&mut buf);
-        for m 
+        let re = Regex::new(r"\x31\x18\x10\x06").unwrap();
+        let re_matches = re.find_iter(&buf);
+        for mat in re_matches {
+            let start = mat.start();
+            println!("{:?}", start);
+        }
+        // for m in re_match {
+        // //     let start = m.start()
+        // }
     }
+    println!("goood");
     Ok(block_size)
 }
 
-pub fn guess_ped_size(path: &str) -> Result<u32, &str>{
+pub fn guess_peb_size(path: &str) -> Result<u32, &str>{
+    println!("guess ped size");
+    let mut file_offset: usize = 0;
     let mut file = match File::open(&path) {
         Err(why) => panic!("couldn't open {}:", why),
         Ok(file) => file
@@ -122,9 +136,45 @@ pub fn guess_ped_size(path: &str) -> Result<u32, &str>{
     let file_size = file.seek(SeekFrom::End(0)).unwrap() + 1;
     file.seek(SeekFrom::Start(0));
     let mut block_size = 0;
-    for i in (0..file_size).step_by(FILE_CHUNK_SZ){
-        let mut buf =[0; FILE_CHUNK_SZ];
-        file.read(&mut buf);
-    }
+    // let offsets = vec![];
+    // for i in (0..file_size).step_by(FILE_CHUNK_SZ){
+    //     let mut buf =[0; FILE_CHUNK_SZ];
+    //     file.read(&mut buf);
+    //     let re = Regex::new(r"UBI#").unwrap();
+    //     let re_matches = re.find_iter(&buf);
+    //     for mat in re_matches {
+    //         let start = mat.start();
+    //         let mut index = 0;
+    //         if file_offset == 0 {
+    //             file_offset = start;
+    //             index = start;
+    //         }else{
+    //             index = start + file_offset
+    //         }
+    //         // offsets.append(index);
+    //     }
+    //     file_offset += FILE_CHUNK_SZ;
+    // }
+    // let occurances = {};
+    // let offsets_size = offsets.size();
+    // for i in 0..offsets_size {
+    //     let mut diff = 0;
+    //     try{
+
+    //     }catch{
+
+    //     }
+    //     occurances[diff] += 1;
+    // }
+    // let most_frequent = 0 
+    // for offset in occurances{
+    //     if occurances[offset] > most_frequent{
+    //         most_frequent = occurances[offset]
+    //         block_size = offset
+    //     }
+    // }
+    
+    println!("goooood");
+    Ok(block_size)
 }
 

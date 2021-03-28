@@ -1,16 +1,27 @@
-// use crate::settings;
-// use crate::debugs;
+use crate::debugs::log;
+use std::io::Seek;
+use std::fs::File;
+use std::io::SeekFrom;
 
 pub struct UbiFile<'a> {
-    path: &'a str,
-    block_size: i32,
-    start_offset: u32,
-    end_offset: i32
+    pub path: &'a str,
+    pub block_size: i32,
+    pub start_offset: u32,
+    pub end_offset: i32,
+    pub file: File
 }
 
 impl UbiFile<'_>{
     pub fn new(path: &str, block_size: i32, start_offset: u32, end_offset: i32) -> UbiFile {
-        UbiFile{
+        let name = "UBI_FILE";
+        let is_valid = false;
+        log("UBIFILE open path", path);
+        let mut file = File::open(&path).expect("unable to open");
+        let file_size = file.seek(SeekFrom::End(0)).unwrap() + 1;
+        // log("File Size ", file_size.to_str());
+        println!("file size {}", file_size);
+        UbiFile {
+            file: file,
             path: path,
             block_size: block_size,
             start_offset: start_offset,
@@ -31,9 +42,11 @@ impl UbiFile<'_>{
     fn get_block_size(){
 
     }
-    fn seek(){
-
+    
+    pub fn seek(& mut self, offset: u64){
+        self.file.seek(SeekFrom::Start(offset)).unwrap();
     }
+
     fn read(){
 
     }

@@ -10,12 +10,33 @@ use corelib::ubifs::ubifsx::UbiFs;
 use corelib::ubi::defines::{UBI_EC_HDR_MAGIC};
 use corelib::ubifs::defines::{UBIFS_NODE_MAGIC};
 use corelib::ubifs::list::{copy_file, list_files};
+use corelib::debugs::{log, error};
+use corelib::ubi::Ubi;
 use std::fs;
 use std::path::PathBuf;
 
+fn create_output_dir(outpath: &str){
+    println!("{:?}", outpath);
+    let path = Path::new(outpath);
+    if path.exists() {
+        let mut entry = match PathBuf::from(outpath).read_dir() {
+            Ok(e) => e,
+            Err(_) => panic!("23333"),
+        };
+        if !entry.next().is_none(){
+            panic!("dir not emptry");
+        }
+    }else{
+        match fs::create_dir(outpath) {
+            Err(why) => panic!("! {:?}", why.kind()),
+            Ok(_) => {},
+        }
+    }
+}
+
 fn main() {
     let start = Instant::now();
-    let description = "List and Extract files of a UBI or UBIFS image.";
+    let description = "Extract contents of a UBI or UBIFS image.";
     let matches = App::new(description)
                           .arg(Arg::with_name("log")
                                .short("l")
@@ -58,29 +79,22 @@ fn main() {
                                .short("f")
                                .long("u-boot-fix")
                                .help("Assume blocks with image_seq 0 are because of older U-boot implementations and include them. (default: False)"))
-                        .arg(Arg::with_name("listpath")
-                               .short("P")
-                               .long("path")
-                               .help("Path to list."))
-                        .arg(Arg::with_name("copyfile")
-                               .short("C")
-                               .long("copy")
-                               .help("File to Copy."))
-                        .arg(Arg::with_name("copyfiledest")
-                               .short("D")
-                               .long("copy-dest")
-                               .help("Copy Destination."))
+                        .arg(Arg::with_name("keep")
+                               .short("k")
+                               .long("keep-permissions")
+                               .help("Maintain file permissions, requires running as root. (default: False)"))
+                        .arg(Arg::with_name("outpath")
+                               .short("o")
+                               .long("output-dir")
+                               .takes_value(true)
+                               .help("Specify output directory path."))
                         .arg(Arg::with_name("filepath")
                                .required(true)
                                .help("UBI/UBIFS image file."))
                         .get_matches();
 
     let file_path = matches.value_of("filepath").unwrap();
-    // let srcdir = PathBuf::from(file_path);
-    // println!("{:?}", fs::canonicalize(&srcdir).unwrap());
-    // let path = Path::new(file_path);
-    // let _display = path.canonicalize();
-    // println!("path is {}", _display);
+    
     unsafe {
         settings::LOGGING_ON = matches.is_present("log");
         settings::LOGGING_ON_VERBOSE = matches.is_present("verbose_log");
@@ -91,7 +105,6 @@ fn main() {
     
         settings::UBOOT_FIX = matches.is_present("uboot_fix");
 
-        // println!("what iiiii {}", settings::LOGGING_ON);
     }
     let mut start_offset = 0;
     let mut end_offset = 0;
@@ -113,7 +126,7 @@ fn main() {
     println!("{:?}", filetype);
     let block_size = 0;
     if matches.is_present("block_size") {
-
+        
     }else {
         // if filetype == {
 
@@ -124,30 +137,55 @@ fn main() {
         //     println!("error");
         // }
     }
+    println!("what the fuck");
+    let  mut outpath: &str = "";
+    if matches.is_present("outpath") {
+        outpath = matches.value_of("outpath").unwrap();
+        println!("{}", outpath); 
 
+        // unsafe{
+        //     settings::OUTPUT_DIR = outpath;
+        // }
+    }
+    let mut perms: &str;
+    if matches.is_present("keep"){
+        perms = matches.value_of("keep").unwrap_or("false");
+    }
+
+    println!("{:?}", fs::canonicalize(&outpath));
     let ufile_obj = UbiFile::new(file_path, block_size, start_offset, end_offset);
     if filetype == UBI_EC_HDR_MAGIC {
-       println!("good guy");
+        println!("good guy");
+       let ubi_obj = Ubi::new(ufile_obj);
+    //    for image in ubi_obj.images{
+    //        img_outpath = 
+    //        println!("{}", img_outpath);
+    //        for volume in image.volumes{
+    //            let blocks = image.volumes[volume].get_blocks(ubi_obj.blocks)
+
+    //            vol_outpath =  ;
+    //            println!("{}", vol_outpath);
+    //            create_output_dir(vol_outpath);
+    //            if vol_blocks.size() == 0 {
+    //                continue;
+    //            }
+    //            let lebv_file = leb_virtual_file::new(ubi_obj, vol_blocks);
+    //            ubifs_obj = ubifs::new(lebv_file);
+    //            println!("Extracting files to: {}", vol_outpath);
+    //            extract_files(ubifs_obj, vol_outpath, perms);
+    //        }
+    //    }
+       
     }else if filetype == UBIFS_NODE_MAGIC {
-       let mut ubifs_obj = UbiFs::new(ufile_obj);
-       if matches.is_present("listpath"){
-            let listpath = matches.value_of("listpath").unwrap();
-            ubifs_obj = list_files(ubifs_obj, listpath);
-       }
-       if matches.is_present("copyfile") && matches.is_present("copyfiledest"){
-            let file_path = matches.value_of("copyfile").unwrap();
-            let dest_file_path = matches.value_of("copyfiledest").unwrap();
-            copy_file(ubifs_obj, file_path, dest_file_path);
-       }
+        let mut ubifs_obj = UbiFs::new(ufile_obj);
+        create_output_dir(outpath);
+        println!("Extracting files to: {}", &outpath);
+        // extract_files(ubifs_obj, outpath, perms);
     }else{
         println!("Something went wrong to get here.");
     }
-    // let log = matches.value_of("log");
-    // println!("{}", log);ñ
-    // Gets a value for config if supplied by user, or defaults to "default.conf"
-    // let config = matches.value_of("log").unwrap_or("default.conf");
-    // println!("Value for config: {}", config);
-    // println!("Hello, world!");
+
     let duration = start.elapsed();
     println!("Time elapsed in expensive_function() is: {:?}", duration);
+
 }

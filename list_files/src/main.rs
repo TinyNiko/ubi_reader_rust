@@ -124,7 +124,7 @@ fn main() {
                 Err(err) => panic!("error")
             };
         }else if filetype == UBIFS_NODE_MAGIC {
-            block_size = utils::guess_leb_size(file_path){
+            block_size = match utils::guess_leb_size(file_path) {
                 Ok(ok) => ok,
                 Err(err) => panic!("error")
             };
@@ -135,7 +135,7 @@ fn main() {
     }
     println!("{}", block_size);
 
-    let ufile_obj = UbiFile::new(file_path, block_size, start_offset, end_offset);
+    let ufile_obj = UbiFile::new(file_path, block_size as i32, start_offset, end_offset);
     if filetype == UBI_EC_HDR_MAGIC {
        println!("good guy");
     }else if filetype == UBIFS_NODE_MAGIC {
